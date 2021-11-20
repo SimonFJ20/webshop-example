@@ -9,7 +9,8 @@
         "dev": "nodemon dist/main.js --config nodemon.json",
         "build": "tsc",
         "watch": "tsc --watch",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "clean": "rm -rf dist/"
     },
     "repository": "https://github.com/SimonFJ20/webshop-example.git",
     "author": "SimonFJ20 <simonfromjakobsen@gmail.com>",
