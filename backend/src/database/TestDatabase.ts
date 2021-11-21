@@ -16,4 +16,10 @@ export class TestDatabase implements Database {
         this.products.push(product);
         return product;
     }
+
+    async deleteProductById(id: number): Promise<void> {
+        return this.products.forEach(
+            (v, i, products) => v.id === id && products.splice(i, 1),
+        );
+    }
 }

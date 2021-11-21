@@ -1,35 +1,11 @@
 import { TestDatabase } from '../database/TestDatabase';
-import { addProduct, getProductById, Product } from './Product';
+import { addProduct, deleteProduct, getProductById, Product } from './Product';
 
 const makeTestProduct = (): Product => ({
     id: 0,
     name: 'test',
     description: 'this is a test',
     price: 0,
-});
-
-describe('addProduct', () => {
-    it('should add product to database', async () => {
-        const db = new TestDatabase();
-        const product = makeTestProduct();
-        await addProduct(product, db);
-        expect(await db.getProductById(0)).toEqual(product);
-    });
-
-    it('should disallow id duplicates', async () => {
-        expect.assertions(1);
-        const db = new TestDatabase();
-        const product = makeTestProduct();
-        const product2 = makeTestProduct();
-        await addProduct(product, db);
-        try {
-            await addProduct(product2, db);
-        } catch (c) {
-            expect((c as Error).message).toBe(
-                'product with same id already exists',
-            );
-        }
-    });
 });
 
 describe('getProductById', () => {
@@ -57,5 +33,39 @@ describe('getProductById', () => {
         } catch (c) {
             expect((c as Error).message).toBe('product with id not found');
         }
+    });
+});
+
+describe('addProduct', () => {
+    it('should add product to database', async () => {
+        const db = new TestDatabase();
+        const product = makeTestProduct();
+        await addProduct(product, db);
+        expect(await db.getProductById(0)).toEqual(product);
+    });
+
+    it('should disallow id duplicates', async () => {
+        expect.assertions(1);
+        const db = new TestDatabase();
+        const product = makeTestProduct();
+        const product2 = makeTestProduct();
+        await addProduct(product, db);
+        try {
+            await addProduct(product2, db);
+        } catch (c) {
+            expect((c as Error).message).toBe(
+                'product with same id already exists',
+            );
+        }
+    });
+});
+
+describe('deleteProduct', () => {
+    it('should delete product from database', async () => {
+        const db = new TestDatabase();
+        const product = makeTestProduct();
+        await addProduct(product, db);
+        await deleteProduct(product, db);
+        expect(await db.getProductById(product.id)).toBe(null);
     });
 });
